@@ -5,21 +5,25 @@ interface ClothingItem {
   brand: string;
   size: string;
   name: string;
+  color: string;
 }
 
 const clothingItems: ClothingItem[] = [
-  { id: 1, brand: 'STATE', size: 'OSFA', name: 'Платье STATE OSFA' },
-  { id: 2, brand: 'COOPER', size: 'W26', name: 'Футболка COOPER W26' },
-  { id: 3, brand: 'BARDOT', size: 'W28', name: 'Джинсы BARDOT W28' },
-  { id: 4, brand: 'ALFANI', size: 'W30', name: 'Юбка ALFANI W30' },
-  { id: 5, brand: 'CECE', size: 'W32', name: 'Куртка CECE W32' },
+  { id: 1, brand: 'STATE', size: 'OSFA', name: 'Платье STATE OSFA', color:'green' },
+  { id: 2, brand: 'COOPER', size: 'W26', name: 'Футболка COOPER W26', color:'beige' },
+  { id: 3, brand: 'BARDOT', size: 'W28', name: 'Джинсы BARDOT W28', color:'darkblue' },
+  { id: 4, brand: 'ALFANI', size: 'W30', name: 'Юбка ALFANI W30', color:'violet' },
+  { id: 5, brand: 'CECE', size: 'W32', name: 'Куртка CECE W32', color:'black' },
 ];
 
 const ShopPage: React.FC = () => {
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [selectedColor, setSelectedColor] = useState<string[]>([]);
   const [isBrandFilterOpen, setIsBrandFilterOpen] = useState<boolean>(true);
   const [isSizeFilterOpen, setIsSizeFilterOpen] = useState<boolean>(true);
+  const [isColorFilterOpen, setIsColorFilterOpen] = useState<boolean>(true);
+
 
   const handleBrandChange = (brand: string) => {
     if (selectedBrands.includes(brand)) {
@@ -33,23 +37,32 @@ const ShopPage: React.FC = () => {
     setSelectedSize(size);
   };
 
+  const handleColorChange = (color: string) => {
+    if (selectedColor.includes(color)) {
+      setSelectedColor(selectedColor.filter((b) => b !== color));
+    } else {
+      setSelectedColor([...selectedColor, color]);
+    }
+  };
+
   const filteredItems = clothingItems.filter(
     (item) =>
       (selectedBrands.length === 0 || selectedBrands.includes(item.brand)) &&
+    (selectedColor.length === 0 || selectedColor.includes(item.color)) &&
       (!selectedSize || item.size === selectedSize)
   );
 
   return (
-    <div style={{ position: 'fixed', top: 0, backgroundColor: '#ffffff', color: '#000000', padding: '20px' }}>
-      <div>
+    <div className='container' style={{position: 'absolute', top: 0, backgroundColor: '#ffffff', color: '#000000', padding: '20px' }}>
+      <aside style={{ float: 'left', borderRight:'solid', borderRightColor:'gray' }}>
         <h2>
         Brand 
-          <button style={{marginLeft: '200px', backgroundColor: 'white'}} onClick={() => setIsBrandFilterOpen(!isBrandFilterOpen)}>
+          <button style={{marginLeft: '199px', backgroundColor: 'white'}} onClick={() => setIsBrandFilterOpen(!isBrandFilterOpen)}>
           {isBrandFilterOpen ? '-' : '+'}
           </button>
         </h2>
         {isBrandFilterOpen && (
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <section style={{ display: 'flex', flexDirection: 'column' }}>
             {['STATE', 'COOPER', 'BARDOT', 'ALFANI', 'CECE', 'DONNA RICCO'].map((brand) => (
               <label key={brand} style={{ marginBottom: '5px' }}>
                 <input
@@ -60,10 +73,8 @@ const ShopPage: React.FC = () => {
                 {brand}
               </label>
             ))}
-          </div>
+          </section>
         )}
-      </div>
-      <div>
         <h2>
         Size (Inches) 
           <button style={{marginLeft: '120px', backgroundColor: 'white'}} onClick={() => setIsSizeFilterOpen(!isSizeFilterOpen)}>
@@ -71,7 +82,7 @@ const ShopPage: React.FC = () => {
           </button>
         </h2>
         {isSizeFilterOpen && (
-          <div style={{ display: 'grid', justifyContent: 'center', flexWrap: 'wrap', gridTemplateColumns: 'repeat(5, 1fr)' }}>
+          <section style={{ display: 'grid', justifyContent: 'center', flexWrap: 'wrap', gridTemplateColumns: 'repeat(5, 1fr)' }}>
             {[
               'OSFA',
               'W26',
@@ -101,32 +112,62 @@ const ShopPage: React.FC = () => {
                   onChange={() => handleSizeChange(size)}
                   style={{ display: 'none' }}
                 />
-                <div
+                <section
                   style={{
                     border: '2px solid #000000',
-                    borderRadius: '5px',
+                    borderRadius: '0px',
                     width: '50px',
                     height: '50px',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    fontWeight: selectedSize === size ? 'bold' : 'normal',
+                    borderWidth: selectedSize === size ? '3px' : '2px',
                   }}
                 >
                   {size}
-                </div>
+                </section>
               </label>
             ))}
-          </div>
+          </section>
         )}
-      </div>
-      <div>
+        <h2>
+        Color 
+          <button style={{marginLeft: '205px', backgroundColor: 'white'}} onClick={() => setIsColorFilterOpen(!isColorFilterOpen)}>
+          {isColorFilterOpen ? '-' : '+'}
+          </button>
+        </h2>
+        {isColorFilterOpen && (
+          <section style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)' }}>
+            {['black', 'beige', 'darkblue', 'green', 'violet', 'lightgrey','darkgrey', 'red', 'yellow', 'brown', 'pink', 'aquamarine'].map((color) => (
+              <label key={color} style={{ margin: '5px', cursor: 'pointer' }}>
+                <input
+                  type="checkbox"
+                  checked={selectedColor.includes(color)}
+                  onChange={() => handleColorChange(color)}
+                  style={{ display: 'none' }}
+                />
+                <section
+                  style={{
+                    border: '2px solid #000000',
+                    borderRadius: '0px',
+                    width: '20px',
+                    height: '20px',
+                    backgroundColor:(color),
+                    borderWidth: selectedColor.includes(color) ? '3px' : '2px',
+                  }}
+                ></section>
+              </label>
+            ))}
+          </section>
+        )}
+      </aside>
+        <section style={{float: 'right'}}>
         <ul>
           {filteredItems.map((item) => (
             <li key={item.id}>{item.name}</li>
           ))}
         </ul>
-      </div>
+        </section>
     </div>
   );
 };
