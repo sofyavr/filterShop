@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
+import ClothingItem from './components/interfaces';
+import FilterSection from './components/BrandsFilter'
+import FilterSectionSizes from './components/SizeFilter'
+import FilterSectionColor from './components/ColorFilter'
 
-interface ClothingItem {
-  id: number;
-  brand: string;
-  size: string;
-  name: string;
-  color: string;
-}
 
 const clothingItems: ClothingItem[] = [
   { id: 1, brand: 'STATE', size: 'OSFA', name: 'Платье STATE OSFA', color:'green' },
@@ -16,6 +13,10 @@ const clothingItems: ClothingItem[] = [
   { id: 5, brand: 'CECE', size: 'W32', name: 'Куртка CECE W32', color:'black' },
 ];
 
+const Brands = ['STATE', 'COOPER', 'BARDOT', 'ALFANI', 'CECE', 'DONNA RICCO'];
+const sizes = ['OSFA', 'W26', 'W27', 'W28', 'W29', 'W30', 'W31', 'W32', 'W33', 'W34', 'W35', 'W36', 'W38', 'W40', 'W42', 'W44', 'W46', 'W48', 'W50', 'W52',];
+const colors = ['black', 'beige', 'darkblue', 'green', 'violet', 'lightgrey','darkgrey', 'red', 'yellow', 'brown', 'pink', 'aquamarine'];
+
 const ShopPage: React.FC = () => {
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
@@ -24,17 +25,12 @@ const ShopPage: React.FC = () => {
   const [isSizeFilterOpen, setIsSizeFilterOpen] = useState<boolean>(true);
   const [isColorFilterOpen, setIsColorFilterOpen] = useState<boolean>(true);
 
-
   const handleBrandChange = (brand: string) => {
     if (selectedBrands.includes(brand)) {
       setSelectedBrands(selectedBrands.filter((b) => b !== brand));
     } else {
       setSelectedBrands([...selectedBrands, brand]);
     }
-  };
-
-  const handleSizeChange = (size: string) => {
-    setSelectedSize(size);
   };
 
   const handleColorChange = (color: string) => {
@@ -54,112 +50,31 @@ const ShopPage: React.FC = () => {
 
   return (
     <div className='container' style={{position: 'absolute', top: 0, backgroundColor: '#ffffff', color: '#000000', padding: '20px' }}>
-      <aside style={{ float: 'left', borderRight:'solid', borderRightColor:'gray' }}>
-        <h2>
-        Brand 
-          <button style={{marginLeft: '199px', backgroundColor: 'white'}} onClick={() => setIsBrandFilterOpen(!isBrandFilterOpen)}>
-          {isBrandFilterOpen ? '-' : '+'}
-          </button>
-        </h2>
-        {isBrandFilterOpen && (
-          <section style={{ display: 'flex', flexDirection: 'column' }}>
-            {['STATE', 'COOPER', 'BARDOT', 'ALFANI', 'CECE', 'DONNA RICCO'].map((brand) => (
-              <label key={brand} style={{ marginBottom: '5px' }}>
-                <input
-                  type="checkbox"
-                  checked={selectedBrands.includes(brand)}
-                  onChange={() => handleBrandChange(brand)}
-                />
-                {brand}
-              </label>
-            ))}
-          </section>
-        )}
-        <h2>
-        Size (Inches) 
-          <button style={{marginLeft: '120px', backgroundColor: 'white'}} onClick={() => setIsSizeFilterOpen(!isSizeFilterOpen)}>
-          {isSizeFilterOpen ? '-' : '+'}
-          </button>
-        </h2>
-        {isSizeFilterOpen && (
-          <section style={{ display: 'grid', justifyContent: 'center', flexWrap: 'wrap', gridTemplateColumns: 'repeat(5, 1fr)' }}>
-            {[
-              'OSFA',
-              'W26',
-              'W27',
-              'W28',
-              'W29',
-              'W30',
-              'W31',
-              'W32',
-              'W33',
-              'W34',
-              'W35',
-              'W36',
-              'W38',
-              'W40',
-              'W42',
-              'W44',
-              'W46',
-              'W48',
-              'W50',
-              'W52',
-            ].map((size) => (
-              <label key={size} style={{ margin: '5px', cursor: 'pointer' }}>
-                <input
-                  type="radio"
-                  checked={selectedSize === size}
-                  onChange={() => handleSizeChange(size)}
-                  style={{ display: 'none' }}
-                />
-                <section
-                  style={{
-                    border: '2px solid #000000',
-                    borderRadius: '0px',
-                    width: '50px',
-                    height: '50px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderWidth: selectedSize === size ? '3px' : '2px',
-                  }}
-                >
-                  {size}
-                </section>
-              </label>
-            ))}
-          </section>
-        )}
-        <h2>
-        Color 
-          <button style={{marginLeft: '205px', backgroundColor: 'white'}} onClick={() => setIsColorFilterOpen(!isColorFilterOpen)}>
-          {isColorFilterOpen ? '-' : '+'}
-          </button>
-        </h2>
-        {isColorFilterOpen && (
-          <section style={{ display: 'grid', gridTemplateColumns: 'repeat(7, 1fr)' }}>
-            {['black', 'beige', 'darkblue', 'green', 'violet', 'lightgrey','darkgrey', 'red', 'yellow', 'brown', 'pink', 'aquamarine'].map((color) => (
-              <label key={color} style={{ margin: '5px', cursor: 'pointer' }}>
-                <input
-                  type="checkbox"
-                  checked={selectedColor.includes(color)}
-                  onChange={() => handleColorChange(color)}
-                  style={{ display: 'none' }}
-                />
-                <section
-                  style={{
-                    border: '2px solid #000000',
-                    borderRadius: '0px',
-                    width: '20px',
-                    height: '20px',
-                    backgroundColor:(color),
-                    borderWidth: selectedColor.includes(color) ? '3px' : '2px',
-                  }}
-                ></section>
-              </label>
-            ))}
-          </section>
-        )}
+    <aside style={{ float: 'left', borderRight:'solid', borderRightColor:'gray' }}>        
+    <FilterSection
+           title="Brand"
+           items={Brands}
+           selectedItems={selectedBrands}
+           onItemChange={handleBrandChange}
+           isOpen={isBrandFilterOpen}
+           toggleOpen={() => setIsBrandFilterOpen(!isBrandFilterOpen)}
+         />
+          <FilterSectionSizes 
+            title="Size (Inches)"
+            items={sizes}
+            selectedItems={[selectedSize || '']}
+            onItemChange={(size) => setSelectedSize(size === selectedSize ? null : size)}
+            isOpen={isSizeFilterOpen}
+            toggleOpen={() => setIsSizeFilterOpen(!isSizeFilterOpen)}
+         />
+         <FilterSectionColor
+            title="Color"
+            items={colors}
+            selectedItems={selectedColor}
+            onItemChange={handleColorChange}
+            isOpen={isColorFilterOpen}
+            toggleOpen={() => setIsColorFilterOpen(!isColorFilterOpen)}
+         />
       </aside>
         <section style={{float: 'right'}}>
         <ul>
@@ -174,4 +89,3 @@ const ShopPage: React.FC = () => {
 
 export default ShopPage;
 
-/** */
