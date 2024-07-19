@@ -1,18 +1,20 @@
 import React from 'react';
+import Accordion from './ButtonOpen';
 
 interface CheckboxProps {
+  title: string;
   items: string[];
   selectedItems: string[];
   onItemChange: (item: string) => void;
-  isOpen: boolean;
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({ items, selectedItems, onItemChange, isOpen }) => {
+const Checkbox: React.FC<CheckboxProps> = ({title, items, selectedItems, onItemChange }) => {
   return (
-    isOpen && (
+    <Accordion
+    title={title}>
         <section style={{ display: 'grid', justifyContent: 'center', flexWrap: 'wrap', gridTemplateColumns: 'repeat(5, 1fr)' }}>
           {items.map((item) => (
-            <label key={item} style={{ marginBottom: '5px' }}>
+            <label key={item} style={{ margin: '5px' }}>
               <input
                 type="checkbox"
                 checked={selectedItems.includes(item)}
@@ -27,16 +29,15 @@ const Checkbox: React.FC<CheckboxProps> = ({ items, selectedItems, onItemChange,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            borderWidth: selectedItems.includes(item) ? '3px' : '2px',
-
+            borderWidth: selectedItems.includes(item) ? '3px' : '2px'
           }}>
               {item}
               </section>
             </label>
           ))}
         </section>
-      )
-);
+      </Accordion>
+    );
 };
 
 export default Checkbox;

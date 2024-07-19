@@ -6,24 +6,16 @@ interface FilterSectionProps {
   items: string[];
   selectedItems: string[];
   onItemChange: (item: string) => void;
-  isOpen: boolean;
-  toggleOpen: () => void;
 }
 
-const FilterSectionSizes: React.FC<FilterSectionProps> = ({ title, items, selectedItems, onItemChange, isOpen, toggleOpen }) => {
+const FilterSectionSizes: React.FC<FilterSectionProps> = ({ title, items, selectedItems, onItemChange}) => {
   return (
     <div>
-      <h2>
-        {title}
-        <button style={{marginLeft: '120px', backgroundColor: 'white'}} onClick={toggleOpen}>
-          {isOpen ? '-' : '+'}
-        </button>
-      </h2>
       <CheckboxSizes
+          title={title}
            items={items}
            selectedItems={selectedItems}
            onItemChange={onItemChange}
-           isOpen={isOpen}
          />
     </div>
   );

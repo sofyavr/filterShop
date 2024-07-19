@@ -6,24 +6,16 @@ interface FilterSectionProps {
   items: string[];
   selectedItems: string[];
   onItemChange: (item: string) => void;
-  isOpen: boolean;
-  toggleOpen: () => void;
 }
 
-const FilterSectionColor: React.FC<FilterSectionProps> = ({ title, items, selectedItems, onItemChange, isOpen, toggleOpen }) => {
+const FilterSectionColor: React.FC<FilterSectionProps> = ({ title, items, selectedItems, onItemChange}) => {
   return (
     <div>
-      <h2>
-        {title}
-        <button style={{marginLeft: '205px', backgroundColor: 'white'}} onClick={toggleOpen}>
-          {isOpen ? '-' : '+'}
-        </button>
-      </h2>
       <CheckboxColor
+            title={title}
            items={items}
            selectedItems={selectedItems}
            onItemChange={onItemChange}
-           isOpen={isOpen}
          />
     </div>
   );

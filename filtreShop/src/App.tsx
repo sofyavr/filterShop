@@ -13,7 +13,7 @@ const clothingItems: ClothingItem[] = [
   { id: 5, brand: 'CECE', size: 'W32', name: 'Куртка CECE W32', color:'black' },
 ];
 
-const Brands = ['STATE', 'COOPER', 'BARDOT', 'ALFANI', 'CECE', 'DONNA RICCO'];
+const brands = ['STATE', 'COOPER', 'BARDOT', 'ALFANI', 'CECE', 'DONNA RICCO'];
 const sizes = ['OSFA', 'W26', 'W27', 'W28', 'W29', 'W30', 'W31', 'W32', 'W33', 'W34', 'W35', 'W36', 'W38', 'W40', 'W42', 'W44', 'W46', 'W48', 'W50', 'W52',];
 const colors = ['black', 'beige', 'darkblue', 'green', 'violet', 'lightgrey','darkgrey', 'red', 'yellow', 'brown', 'pink', 'aquamarine'];
 
@@ -21,9 +21,6 @@ const ShopPage: React.FC = () => {
   const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
   const [selectedColor, setSelectedColor] = useState<string[]>([]);
-  const [isBrandFilterOpen, setIsBrandFilterOpen] = useState<boolean>(true);
-  const [isSizeFilterOpen, setIsSizeFilterOpen] = useState<boolean>(true);
-  const [isColorFilterOpen, setIsColorFilterOpen] = useState<boolean>(true);
 
   const handleBrandChange = (brand: string) => {
     if (selectedBrands.includes(brand)) {
@@ -53,27 +50,21 @@ const ShopPage: React.FC = () => {
     <aside style={{ float: 'left', borderRight:'solid', borderRightColor:'gray' }}>        
     <FilterSection
            title="Brand"
-           items={Brands}
+           items={brands}
            selectedItems={selectedBrands}
            onItemChange={handleBrandChange}
-           isOpen={isBrandFilterOpen}
-           toggleOpen={() => setIsBrandFilterOpen(!isBrandFilterOpen)}
          />
           <FilterSectionSizes 
             title="Size (Inches)"
             items={sizes}
             selectedItems={[selectedSize || '']}
             onItemChange={(size) => setSelectedSize(size === selectedSize ? null : size)}
-            isOpen={isSizeFilterOpen}
-            toggleOpen={() => setIsSizeFilterOpen(!isSizeFilterOpen)}
          />
          <FilterSectionColor
             title="Color"
             items={colors}
             selectedItems={selectedColor}
             onItemChange={handleColorChange}
-            isOpen={isColorFilterOpen}
-            toggleOpen={() => setIsColorFilterOpen(!isColorFilterOpen)}
          />
       </aside>
         <section style={{float: 'right'}}>
